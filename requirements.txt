@@ -3,3 +3,4 @@ tensorflow==2.21.0
 numpy
 scikit-learn
 joblib==1.6.0
+gunicorn
