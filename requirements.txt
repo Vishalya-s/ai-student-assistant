@@ -1,6 +1,6 @@
 Flask
-tensorflow==2.21.0
 numpy
 scikit-learn
 joblib==1.6.0
+ai-edge-litert==2.2.0
 gunicorn
