@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Student Assistant</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 25px;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>AI Student Assistant</h1>
+
+    <div class="form-group">
+        <label>Study Hours</label>
+        <input type="number" id="study_hours" value="7" step="0.1">
+    </div>
+
+    <div class="form-group">
+        <label>Attendance (%)</label>
+        <input type="number" id="attendance" value="85" step="0.1">
+    </div>
+
+    <div class="form-group">
+        <label>Previous Score</label>
+        <input type="number" id="previous_score" value="75" step="0.1">
+    </div>
+
+    <div class="form-group">
+        <label>Assignments Completed (%)</label>
+        <input type="number" id="assignments_completed" value="90" step="0.1">
+    </div>
+
+    <div class="form-group">
+        <label>Sleep Hours</label>
+        <input type="number" id="sleep_hours" value="7" step="0.1">
+    </div>
+
+    <div class="form-group">
+        <label>Participation (%)</label>
+        <input type="number" id="participation" value="80" step="0.1">
+    </div>
+
+    <button onclick="predictScore()">Predict Final Score</button>
+    <button onclick="saveStudent()">Save Student</button>
+
+    <div id="result"></div>
+
+    <script>
+
+async function predictScore() {
+
+    const studentData = {
+        study_hours: Number(document.getElementById("study_hours").value),
+        attendance: Number(document.getElementById("attendance").value),
+        previous_score: Number(document.getElementById("previous_score").value),
+        assignments_completed: Number(document.getElementById("assignments_completed").value),
+        sleep_hours: Number(document.getElementById("sleep_hours").value),
+        participation: Number(document.getElementById("participation").value)
+    };
+
+    try {
+
+        const response = await fetch("/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(studentData)
+        });
+
+        const result = await response.json();
+
+        document.getElementById("result").innerText =
+            "Predicted Final Score: " + result.predicted_final_score;
+
+    } catch (error) {
+
+        document.getElementById("result").innerText =
+            "Error connecting to the AI model.";
+
+    }
+}
+
+
+async function saveStudent() {
+
+    const name = prompt("Enter student name:");
+
+    if (name === null || name.trim() === "") {
+        return;
+    }
+
+    const email = prompt("Enter student email:");
+
+    if (email === null || email.trim() === "") {
+        return;
+    }
+
+    const studentData = {
+        name: name,
+        email: email,
+        studyHours: Number(document.getElementById("study_hours").value),
+        attendance: Number(document.getElementById("attendance").value),
+        previousScore: Number(document.getElementById("previous_score").value),
+        assignmentsCompleted: Number(document.getElementById("assignments_completed").value),
+        sleepHours: Number(document.getElementById("sleep_hours").value),
+        participation: Number(document.getElementById("participation").value)
+    };
+
+    try {
+
+        const response = await fetch("/students", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(studentData)
+        });
+
+        const result = await response.json();
+
+        alert(
+            "Student saved successfully! Student ID: " +
+            result.studentId
+        );
+
+    } catch (error) {
+
+        alert("Error saving student.");
+
+    }
+}
+
+</script>
+
+</body>
+</html>

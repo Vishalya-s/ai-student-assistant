@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+target/
+.idea/
+.env
+application.properties
+.DS_Store
+Thumbs.db

@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+
+# Java / Maven
+target/
+
+# Secrets
+application.properties
+.env
+
+# IDE files
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
