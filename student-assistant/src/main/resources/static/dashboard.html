@@ -3,90 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AI Student Assistant</title>
 
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 20px;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         h1 {
             text-align: center;
+            margin-bottom: 8px;
         }
 
-        .form-group {
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
             margin-bottom: 15px;
         }
 
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
         label {
-            display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            font-weight: bold;
         }
 
         input {
-            width: 100%;
             padding: 10px;
-            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         button {
-            width: 100%;
+            flex: 1;
             padding: 12px;
-            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
             cursor: pointer;
+        }
+
+        .predict-btn {
+            background: #222;
+            color: white;
+        }
+
+        .save-btn {
+            background: #555;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
         }
 
         #result {
             margin-top: 25px;
-            font-size: 24px;
+            padding: 20px;
             text-align: center;
+            background: #f0f2f4;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #message {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        @media (max-width: 650px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
 
+<div class="container">
+
     <h1>AI Student Assistant</h1>
 
-    <div class="form-group">
-        <label>Study Hours</label>
-        <input type="number" id="study_hours" value="7" step="0.1">
+    <p class="subtitle">
+        Student Performance Prediction System
+    </p>
+
+    <div class="section">
+        <h2>Student Information</h2>
+
+        <div class="grid">
+
+            <div class="form-group">
+                <label for="name">Student Name</label>
+                <input type="text" id="name" placeholder="Enter student name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter email">
+            </div>
+
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Attendance (%)</label>
-        <input type="number" id="attendance" value="85" step="0.1">
+    <div class="section">
+        <h2>Performance Information</h2>
+
+        <div class="grid">
+
+            <div class="form-group">
+                <label for="study_hours">Study Hours</label>
+                <input type="number" id="study_hours" value="7" step="0.1">
+            </div>
+
+            <div class="form-group">
+                <label for="attendance">Attendance (%)</label>
+                <input type="number" id="attendance" value="85" step="0.1">
+            </div>
+
+            <div class="form-group">
+                <label for="previous_score">Previous Score</label>
+                <input type="number" id="previous_score" value="75" step="0.1">
+            </div>
+
+            <div class="form-group">
+                <label for="assignments_completed">
+                    Assignments Completed (%)
+                </label>
+                <input type="number" id="assignments_completed" value="90" step="0.1">
+            </div>
+
+            <div class="form-group">
+                <label for="sleep_hours">Sleep Hours</label>
+                <input type="number" id="sleep_hours" value="7" step="0.1">
+            </div>
+
+            <div class="form-group">
+                <label for="participation">Participation (%)</label>
+                <input type="number" id="participation" value="80" step="0.1">
+            </div>
+
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Previous Score</label>
-        <input type="number" id="previous_score" value="75" step="0.1">
+    <div class="buttons">
+
+        <button class="predict-btn" onclick="predictScore()">
+            Predict Final Score
+        </button>
+
+        <button class="save-btn" onclick="saveStudent()">
+            Save Student
+        </button>
+
     </div>
 
-    <div class="form-group">
-        <label>Assignments Completed (%)</label>
-        <input type="number" id="assignments_completed" value="90" step="0.1">
+    <div id="result">
+        Predicted Final Score: —
     </div>
 
-    <div class="form-group">
-        <label>Sleep Hours</label>
-        <input type="number" id="sleep_hours" value="7" step="0.1">
-    </div>
+    <div id="message"></div>
 
-    <div class="form-group">
-        <label>Participation (%)</label>
-        <input type="number" id="participation" value="80" step="0.1">
-    </div>
+</div>
 
-    <button onclick="predictScore()">Predict Final Score</button>
-    <button onclick="saveStudent()">Save Student</button>
 
-    <div id="result"></div>
-
-    <script>
+<script>
 
 async function predictScore() {
 
@@ -94,9 +219,13 @@ async function predictScore() {
         study_hours: Number(document.getElementById("study_hours").value),
         attendance: Number(document.getElementById("attendance").value),
         previous_score: Number(document.getElementById("previous_score").value),
-        assignments_completed: Number(document.getElementById("assignments_completed").value),
+        assignments_completed: Number(
+            document.getElementById("assignments_completed").value
+        ),
         sleep_hours: Number(document.getElementById("sleep_hours").value),
-        participation: Number(document.getElementById("participation").value)
+        participation: Number(
+            document.getElementById("participation").value
+        )
     };
 
     try {
@@ -109,15 +238,26 @@ async function predictScore() {
             body: JSON.stringify(studentData)
         });
 
+        if (!response.ok) {
+            throw new Error("Prediction request failed");
+        }
+
         const result = await response.json();
 
         document.getElementById("result").innerText =
-            "Predicted Final Score: " + result.predicted_final_score;
+            "Predicted Final Score: " +
+            result.predicted_final_score;
+
+        document.getElementById("message").innerText =
+            "Prediction generated successfully.";
 
     } catch (error) {
 
         document.getElementById("result").innerText =
-            "Error connecting to the AI model.";
+            "Prediction failed.";
+
+        document.getElementById("message").innerText =
+            "Could not connect to the AI model.";
 
     }
 }
@@ -125,27 +265,36 @@ async function predictScore() {
 
 async function saveStudent() {
 
-    const name = prompt("Enter student name:");
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
 
-    if (name === null || name.trim() === "") {
-        return;
-    }
-
-    const email = prompt("Enter student email:");
-
-    if (email === null || email.trim() === "") {
+    if (name === "" || email === "") {
+        document.getElementById("message").innerText =
+            "Please enter the student name and email.";
         return;
     }
 
     const studentData = {
         name: name,
         email: email,
-        studyHours: Number(document.getElementById("study_hours").value),
-        attendance: Number(document.getElementById("attendance").value),
-        previousScore: Number(document.getElementById("previous_score").value),
-        assignmentsCompleted: Number(document.getElementById("assignments_completed").value),
-        sleepHours: Number(document.getElementById("sleep_hours").value),
-        participation: Number(document.getElementById("participation").value)
+        studyHours: Number(
+            document.getElementById("study_hours").value
+        ),
+        attendance: Number(
+            document.getElementById("attendance").value
+        ),
+        previousScore: Number(
+            document.getElementById("previous_score").value
+        ),
+        assignmentsCompleted: Number(
+            document.getElementById("assignments_completed").value
+        ),
+        sleepHours: Number(
+            document.getElementById("sleep_hours").value
+        ),
+        participation: Number(
+            document.getElementById("participation").value
+        )
     };
 
     try {
@@ -158,16 +307,20 @@ async function saveStudent() {
             body: JSON.stringify(studentData)
         });
 
+        if (!response.ok) {
+            throw new Error("Save request failed");
+        }
+
         const result = await response.json();
 
-        alert(
+        document.getElementById("message").innerText =
             "Student saved successfully! Student ID: " +
-            result.studentId
-        );
+            result.studentId;
 
     } catch (error) {
 
-        alert("Error saving student.");
+        document.getElementById("message").innerText =
+            "Error saving student.";
 
     }
 }
