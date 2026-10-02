@@ -12,7 +12,7 @@ public class MlPredictionService {
 
     public MlPredictionService() {
         this.restClient = RestClient.builder()
-                .baseUrl("https://ai-student-assistant-1-yh2w.onrender.com")
+                .baseUrl("https://ai-student-assistant-2-kv49.onrender.com")
                 .build();
     }
 
